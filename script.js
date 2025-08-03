@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingBtn = document.getElementById('landing-btn');
     const startBtn = document.getElementById('start-btn');
     const backToTitlesBtn = document.getElementById('back-to-titles');
+    const goToFirstPageBtn = document.getElementById('go-to-first-page');
     const nextPageBtn = document.getElementById('next-page-btn');
     const clearProgressBtn = document.getElementById('clear-progress-btn');
     const progressIndicator = document.getElementById('progress-indicator');
@@ -380,6 +381,26 @@ document.addEventListener('DOMContentLoaded', () => {
         pageDisplay.style.display = 'none';
         showUnitList();
         showPageList(currentUnitId);
+    });
+
+    // 5. Go to first page button
+    goToFirstPageBtn.addEventListener('click', () => {
+        // Hide all sections
+        pageDisplay.style.display = 'none';
+        courseContainer.style.display = 'none';
+        courseOverview.style.display = 'none';
+        completionMessage.style.display = 'none';
+        
+        // Show landing page (the very first page)
+        landingPage.style.display = 'block';
+        
+        // Reset current state but keep progress
+        currentUnitId = null;
+        currentPageIndex = 0;
+        currentPages = [];
+        
+        // Save the new state
+        saveProgress();
     });
 
     nextPageBtn.addEventListener('click', () => {
