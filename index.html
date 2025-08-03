@@ -16,7 +16,7 @@
                         <button id="landing-btn">ابدأ الدورة</button>
                     </div>
                     <div class="landing-image">
-                        <img src="imgs/hero-image.jpg" alt="Digital Marketing Course" class="hero-image">
+                        <img src="imgs/hero-image.png" alt="Digital Marketing Course" class="hero-image">
                     </div>
                 </div>
             </section>
@@ -334,6 +334,16 @@
                         <div class="completion-actions">
                             <button id="restart-course" class="completion-btn secondary">🔄 إعادة مراجعة الكورس</button>
                         </div>
+                        
+                        <!-- Course End Navigation Buttons -->
+                        <div class="course-end-navigation">
+                            <button class="completion-nav-btn prev-btn" onclick="goToPreviousSection()" title="العودة للخلف">
+                                ← العودة للخلف
+                            </button>
+                            <button class="completion-nav-btn home-btn" onclick="goToHome()" title="العودة للصفحة الرئيسية">
+                                🏠 الصفحة الرئيسية
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -343,9 +353,25 @@
                 <div id="page-content"></div>
                 <div class="navigation-controls">
                     <button id="back-to-titles">العودة للعناوين</button>
-                    <button id="go-to-first-page">العودة للصفحة الأولى</button>
-                    <span id="page-counter"></span>
-                    <button id="next-page-btn">الصفحة التالية</button>
+                    <button id="go-to-first-page" style="background: #ff4757; color: white; font-weight: bold;">🏠 العودة للصفحة الأولى</button>
+                    
+                    <!-- New arrow navigation -->
+                    <div class="arrow-navigation">
+                        <button id="prev-page-btn" class="arrow-btn" title="الصفحة السابقة (يمكنك أيضاً استخدام السهم الأيسر ←)">
+                            <span class="arrow">←</span>
+                            السابق
+                        </button>
+                        <span id="page-counter"></span>
+                        <button id="next-page-btn" class="arrow-btn" title="الصفحة التالية (يمكنك أيضاً استخدام السهم الأيمن →)">
+                            التالي
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Keyboard navigation hint -->
+                    <div class="keyboard-hint">
+                        💡 <small>نصيحة: يمكنك استخدام أسهم الكيبورد ← → للتنقل بين الصفحات</small>
+                    </div>
                 </div>
             </div>
 
@@ -382,6 +408,16 @@
                         <h3>🤔 فكر معنا!</h3>
                         <p>اذكر 3 أمثلة من حياتك اليومية حيث رأيت تسويقاً رقمياً:</p>
                         <p>مثال: إعلان على يوتيوب قبل مقطع فيديو، منشور مدفوع على إنستغرام، رسالة إعلانية على واتساب</p>
+                    </div>
+                    
+                    <!-- Page Navigation Buttons -->
+                    <div class="page-navigation-buttons">
+                        <button class="nav-btn prev-btn" onclick="navigatePage('previous')" title="الصفحة السابقة">
+                            ← السابق
+                        </button>
+                        <button class="nav-btn next-btn" onclick="navigatePage('next')" title="الصفحة التالية">
+                            التالي →
+                        </button>
                     </div>
                 </div>
                 <div id="unit1-page2-content">
@@ -449,6 +485,16 @@
                         <p><strong>التسويق التقليدي:</strong> إعلان صحيفة قد يكلف 2000 جنيه</p>
                         <p><strong>التسويق الرقمي:</strong> إعلان فيسبوك قد يكلف 200 جنيه فقط!</p>
                         <p>ما هي نسبة التوفير؟ احسبها: (2000-200)/2000 × 100 = ?</p>
+                    </div>
+                    
+                    <!-- Page Navigation Buttons -->
+                    <div class="page-navigation-buttons">
+                        <button class="nav-btn prev-btn" onclick="navigatePage('previous')" title="الصفحة السابقة">
+                            ← السابق
+                        </button>
+                        <button class="nav-btn next-btn" onclick="navigatePage('next')" title="الصفحة التالية">
+                            التالي →
+                        </button>
                     </div>
                 </div>
                 <div id="unit1-page3-content">

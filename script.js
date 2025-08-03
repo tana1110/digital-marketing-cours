@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTitlesBtn = document.getElementById('back-to-titles');
     const goToFirstPageBtn = document.getElementById('go-to-first-page');
     const nextPageBtn = document.getElementById('next-page-btn');
+    const prevPageBtn = document.getElementById('prev-page-btn');
     const clearProgressBtn = document.getElementById('clear-progress-btn');
     const progressIndicator = document.getElementById('progress-indicator');
     
@@ -253,18 +254,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const pageCounter = document.getElementById('page-counter');
         pageCounter.textContent = `صفحة ${currentPageIndex + 1} من ${currentPages.length}`;
         
+        // Update previous button visibility and functionality
+        if (prevPageBtn) {
+            if (currentPageIndex <= 0) {
+                prevPageBtn.disabled = true;
+                prevPageBtn.style.opacity = '0.5';
+            } else {
+                prevPageBtn.disabled = false;
+                prevPageBtn.style.opacity = '1';
+            }
+        }
+        
+        // Update next button text and functionality
         if (currentPageIndex >= currentPages.length - 1) {
             // Check if this is the last unit
             const nextUnitId = parseInt(currentUnitId) + 1;
             const nextUnit = document.getElementById(`unit${nextUnitId}`);
             
             if (nextUnit) {
-                nextPageBtn.textContent = 'الانتقال للوحدة التالية';
+                nextPageBtn.innerHTML = 'التالي <span class="arrow">→</span>';
+                nextPageBtn.title = 'الانتقال للوحدة التالية';
             } else {
-                nextPageBtn.textContent = 'إنهاء الكورس';
+                nextPageBtn.innerHTML = 'إنهاء الكورس <span class="arrow">🏆</span>';
+                nextPageBtn.title = 'إنهاء الكورس';
             }
         } else {
-             nextPageBtn.textContent = 'الصفحة التالية';
+            nextPageBtn.innerHTML = 'التالي <span class="arrow">→</span>';
+            nextPageBtn.title = 'الصفحة التالية';
         }
     }
     
@@ -385,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Go to first page button
     goToFirstPageBtn.addEventListener('click', () => {
-        // Hide all sections
+        // Hide all sections immediately
         pageDisplay.style.display = 'none';
         courseContainer.style.display = 'none';
         courseOverview.style.display = 'none';
@@ -401,6 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Save the new state
         saveProgress();
+        
+        // Scroll to top to ensure user sees the landing page
+        window.scrollTo(0, 0);
     });
 
     nextPageBtn.addEventListener('click', () => {
@@ -424,6 +443,17 @@ document.addEventListener('DOMContentLoaded', () => {
             handleUnitCompletion();
         }
     });
+
+    // Previous page button event listener
+    if (prevPageBtn) {
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                const prevPageId = currentPages[currentPageIndex].dataset.pageId;
+                showPage(prevPageId);
+            }
+        });
+    }
     
     // Completion screen button handlers
     const restartCourseBtn = document.getElementById('restart-course');
@@ -464,6 +494,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Add keyboard navigation support
+    document.addEventListener('keydown', (e) => {
+        // Only add keyboard navigation when we're viewing a page
+        if (pageDisplay.style.display !== 'none') {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                
+                if (e.key === 'ArrowLeft' && prevPageBtn && !prevPageBtn.disabled) {
+                    prevPageBtn.click();
+                } else if (e.key === 'ArrowRight' && nextPageBtn) {
+                    nextPageBtn.click();
+                }
+            }
+        }
+    });
+
     // Load saved progress when page loads
     restoreProgress();
 });
+
+// --- Additional Navigation Functions ---
+
+// Function to handle page navigation from within page content
+function navigatePage(direction) {
+    if (direction === 'previous') {
+        if (document.getElementById('prev-page-btn')) {
+            document.getElementById('prev-page-btn').click();
+        }
+    } else if (direction === 'next') {
+        if (document.getElementById('next-page-btn')) {
+            document.getElementById('next-page-btn').click();
+        }
+    }
+}
+
+// Function to go to previous section from completion page
+function goToPreviousSection() {
+    const completionMessage = document.getElementById('completion-message');
+    const courseContainer = document.getElementById('course-container');
+    
+    if (completionMessage) {
+        completionMessage.style.display = 'none';
+    }
+    
+    if (courseContainer) {
+        courseContainer.style.display = 'block';
+    }
+}
+
+// Function to go to home page
+function goToHome() {
+    const landingPage = document.getElementById('landing-page');
+    const courseOverview = document.getElementById('course-overview');
+    const courseContainer = document.getElementById('course-container');
+    const pageDisplay = document.getElementById('page-display');
+    const completionMessage = document.getElementById('completion-message');
+    
+    // Hide all sections
+    if (courseOverview) courseOverview.style.display = 'none';
+    if (courseContainer) courseContainer.style.display = 'none';
+    if (pageDisplay) pageDisplay.style.display = 'none';
+    if (completionMessage) completionMessage.style.display = 'none';
+    
+    // Show landing page
+    if (landingPage) {
+        landingPage.style.display = 'block';
+    }
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
