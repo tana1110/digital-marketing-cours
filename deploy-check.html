@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Path Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Image Path Test</h1>
+        <p>This page tests if the image path is working correctly for deployment.</p>
+        
+        <div id="image-status" class="status">🔄 Loading image...</div>
+        
+        <img src="./imgs/hero-image.png" alt="Test Image" class="test-image" id="test-image">
+        
+        <div id="instructions">
+            <h3>Instructions:</h3>
+            <ul style="text-align: right; direction: rtl;">
+                <li>إذا ظهرت الصورة أعلاه، فإن المسار صحيح ✅</li>
+                <li>إذا لم تظهر الصورة، تحقق من وجود مجلد imgs ✗</li>
+                <li>تأكد من رفع جميع الملفات عند النشر 📁</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button onclick="window.location.href='index.html'" style="background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                🏠 العودة للموقع الرئيسي
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const testImage = document.getElementById('test-image');
+        const statusDiv = document.getElementById('image-status');
+        
+        testImage.onload = function() {
+            statusDiv.className = 'status success';
+            statusDiv.innerHTML = '✅ Image loaded successfully! Path is correct.';
+        };
+        
+        testImage.onerror = function() {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = '❌ Image failed to load. Check file structure.';
+        };
+        
+        // Test after 3 seconds if no event fired
+        setTimeout(() => {
+            if (statusDiv.innerHTML.includes('Loading')) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = '⚠️ Image loading timeout. Check file structure.';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

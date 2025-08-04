@@ -3,20 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رحلتي في عالم التسويق الرقمي</title>
+    <title>دورة أساسية التسويق الرقمي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="top-nav" id="top-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="nav-home-btn" onclick="goToHome()" title="الصفحة الرئيسية">
+                    🏠 الرئيسية
+                </button>
+            </div>
+            
+            <div class="nav-center">
+                <div class="nav-links">
+                    <button class="nav-link" id="nav-overview" onclick="showOverview()" title="نظرة عامة">
+                        📋 نظرة عامة
+                    </button>
+                    <button class="nav-link" id="nav-units" onclick="showUnits()" title="الوحدات">
+                        📚 الوحدات
+                    </button>
+                    <button class="nav-link" onclick="showProgress()" title="التقدم">
+                        📊 التقدم
+                    </button>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="progress-indicator" id="nav-progress-indicator" style="display: none;">
+                    <span id="nav-progress-text">0/20</span>
+                    <div class="progress-bar" id="nav-progress">
+                        <div class="progress-fill" id="nav-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div id="content-body">
         <main>
             <section id="landing-page">
-                <div class="landing-container">
-                    <div class="landing-content">
-                        <h1>كورس أساسيات التسويق الرقمي</h1>
-                        <button id="landing-btn">ابدأ الدورة</button>
+                <div class="simple-landing-container">
+                    <!-- Floating animated icons -->
+                    <div class="floating-icons">
+                        <div class="floating-icon" style="--delay: 0s; --x: 15%; --y: 25%;">🚀</div>
+                        <div class="floating-icon" style="--delay: 1s; --x: 85%; --y: 20%;">⭐</div>
+                        <div class="floating-icon" style="--delay: 2s; --x: 10%; --y: 75%;">💡</div>
+                        <div class="floating-icon" style="--delay: 1.5s; --x: 90%; --y: 70%;">🎯</div>
                     </div>
-                    <div class="landing-image">
-                        <img src="imgs/hero-image.png" alt="Digital Marketing Course" class="hero-image">
+                    
+                    <div class="landing-text-content">
+                        <h1 class="main-header">
+                            <span class="text-bounce" style="--delay: 0s;">دورة</span>
+                            <span class="text-bounce" style="--delay: 0.2s;">أساسية</span>
+                            <span class="text-bounce" style="--delay: 0.4s;">التسويق</span>
+                            <span class="text-bounce" style="--delay: 0.6s;">الرقمي</span>
+                            <div class="magic-wand">✨</div>
+                        </h1>
+                        <div class="bottom-text">
+                            <span class="rainbow-text">ابدأ الدورة!</span>
+                            <div class="click-icon">👆</div>
+                        </div>
+                    </div>
+                    
+                    <div class="image-container" id="hero-image-container">
+                        <img src="./imgs/hero-image.png" alt="رحلة التسويق الرقمي" class="hero-image">
+                        <div class="dancing-emojis">
+                            <div class="dancing-emoji" style="--delay: 0s;">🎉</div>
+                            <div class="dancing-emoji" style="--delay: 1s;">🌈</div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -24,22 +83,19 @@
             <section id="course-overview" style="display: none;">
                 <div class="overview-container">
                     <div class="overview-header">
-                        <h2>🎓 أهلاً بك يا بطل في رحلة التسويق الرقمي!</h2>
                         <p class="welcome-text">هذه الدورة مصممة خصيصاً لك لتتعلم أسرار التسويق الرقمي بطريقة ممتعة وبسيطة.</p>
                     </div>
 
                     <div class="course-stats">
                         <div class="stat-item">
+                            <div class="stat-icon">📚</div>
                             <div class="stat-number">5</div>
                             <div class="stat-label">وحدات شاملة</div>
                         </div>
                         <div class="stat-item">
+                            <div class="stat-icon">🎯</div>
                             <div class="stat-number">21</div>
                             <div class="stat-label">درس تفاعلي</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">100%</div>
-                            <div class="stat-label">مجاني تماماً</div>
                         </div>
                     </div>
 
@@ -134,7 +190,7 @@
                     </div>
 
                     <div class="start-journey">
-                        <h3>🎉 ابدأ رحلتك الآن!</h3>
+                        <h3>🎉 ابدأ الدورة!</h3>
                         <p>مرحباً بك في مجتمع المسوقين الرقميين. ستتعلم خطوة بخطوة، وفي النهاية ستكون قادراً على تنفيذ حملات تسويقية ناجحة بنفسك!</p>
                         <div class="course-actions">
                             <button id="start-btn">🚀 ابدأ الدورة الآن!</button>
@@ -340,9 +396,7 @@
                             <button class="completion-nav-btn prev-btn" onclick="goToPreviousSection()" title="العودة للخلف">
                                 ← العودة للخلف
                             </button>
-                            <button class="completion-nav-btn home-btn" onclick="goToHome()" title="العودة للصفحة الرئيسية">
-                                🏠 الصفحة الرئيسية
-                            </button>
+                            <!-- Home button removed as requested -->
                         </div>
                     </div>
                 </div>
@@ -352,25 +406,18 @@
             <div id="page-display" style="display: none;">
                 <div id="page-content"></div>
                 <div class="navigation-controls">
-                    <button id="back-to-titles">العودة للعناوين</button>
-                    <button id="go-to-first-page" style="background: #ff4757; color: white; font-weight: bold;">🏠 العودة للصفحة الأولى</button>
-                    
-                    <!-- New arrow navigation -->
+                    <!-- Home button removed as requested -->
+                    <!-- Arrow navigation only -->
                     <div class="arrow-navigation">
-                        <button id="prev-page-btn" class="arrow-btn" title="الصفحة السابقة (يمكنك أيضاً استخدام السهم الأيسر ←)">
+                        <button id="prev-page-btn" class="arrow-btn" title="الصفحة السابقة">
                             <span class="arrow">←</span>
                             السابق
                         </button>
                         <span id="page-counter"></span>
-                        <button id="next-page-btn" class="arrow-btn" title="الصفحة التالية (يمكنك أيضاً استخدام السهم الأيمن →)">
+                        <button id="next-page-btn" class="arrow-btn" title="الصفحة التالية">
                             التالي
                             <span class="arrow">→</span>
                         </button>
-                    </div>
-                    
-                    <!-- Keyboard navigation hint -->
-                    <div class="keyboard-hint">
-                        💡 <small>نصيحة: يمكنك استخدام أسهم الكيبورد ← → للتنقل بين الصفحات</small>
                     </div>
                 </div>
             </div>
@@ -410,15 +457,7 @@
                         <p>مثال: إعلان على يوتيوب قبل مقطع فيديو، منشور مدفوع على إنستغرام، رسالة إعلانية على واتساب</p>
                     </div>
                     
-                    <!-- Page Navigation Buttons -->
-                    <div class="page-navigation-buttons">
-                        <button class="nav-btn prev-btn" onclick="navigatePage('previous')" title="الصفحة السابقة">
-                            ← السابق
-                        </button>
-                        <button class="nav-btn next-btn" onclick="navigatePage('next')" title="الصفحة التالية">
-                            التالي →
-                        </button>
-                    </div>
+
                 </div>
                 <div id="unit1-page2-content">
                     <h2>لماذا التسويق الرقمي مهم جداً؟ 📈</h2>
@@ -487,15 +526,7 @@
                         <p>ما هي نسبة التوفير؟ احسبها: (2000-200)/2000 × 100 = ?</p>
                     </div>
                     
-                    <!-- Page Navigation Buttons -->
-                    <div class="page-navigation-buttons">
-                        <button class="nav-btn prev-btn" onclick="navigatePage('previous')" title="الصفحة السابقة">
-                            ← السابق
-                        </button>
-                        <button class="nav-btn next-btn" onclick="navigatePage('next')" title="الصفحة التالية">
-                            التالي →
-                        </button>
-                    </div>
+
                 </div>
                 <div id="unit1-page3-content">
                     <h2>الفرق بين التسويق الرقمي والتقليدي ⚔️</h2>

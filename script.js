@@ -1,3 +1,104 @@
+// Global navigation functions (available before DOM loads)
+
+// Function to control navbar visibility
+function updateNavbarVisibility(section) {
+    const navbar = document.getElementById('top-nav');
+    if (navbar) {
+        // Hide navbar on landing page and completion page only
+        if (section === 'landing' || section === 'completion') {
+            navbar.style.display = 'none';
+        } else {
+            navbar.style.display = 'block';
+        }
+    }
+}
+
+function showOverview() {
+    const landingPage = document.getElementById('landing-page');
+    const courseOverview = document.getElementById('course-overview');
+    const courseContainer = document.getElementById('course-container');
+    const pageDisplay = document.getElementById('page-display');
+    
+    landingPage.style.display = 'none';
+    courseOverview.style.display = 'block';
+    courseContainer.style.display = 'none';
+    pageDisplay.style.display = 'none';
+    
+    updateNavigationState('overview');
+    updateNavbarVisibility('overview');
+}
+
+function showUnits() {
+    const landingPage = document.getElementById('landing-page');
+    const courseOverview = document.getElementById('course-overview');
+    const courseContainer = document.getElementById('course-container');
+    const pageDisplay = document.getElementById('page-display');
+    
+    landingPage.style.display = 'none';
+    courseOverview.style.display = 'none';
+    courseContainer.style.display = 'block';
+    pageDisplay.style.display = 'none';
+    
+    updateNavigationState('units');
+    updateNavbarVisibility('units');
+}
+
+function showProgress() {
+    // Show a progress modal or section
+    const completedPages = getCompletedPagesCount();
+    const totalPages = 20;
+    const progressPercent = Math.round((completedPages / totalPages) * 100);
+    
+    alert(`📊 تقدمك في الكورس:\n\n` +
+          `الصفحات المكتملة: ${completedPages} من ${totalPages}\n` +
+          `النسبة المئوية: ${progressPercent}%\n\n` +
+          `استمر في التعلم! 💪`);
+}
+
+function updateNavigationState(activeSection) {
+    // Update active navigation link
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => link.classList.remove('active'));
+    
+    const activeLink = document.getElementById(`nav-${activeSection}`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+    
+    // Update progress indicator
+    updateNavigationProgress();
+}
+
+function updateNavigationProgress() {
+    const completedPages = getCompletedPagesCount();
+    const totalPages = 20;
+    const progressPercent = Math.round((completedPages / totalPages) * 100);
+    
+    const progressText = document.getElementById('nav-progress-text');
+    const progressFill = document.getElementById('nav-progress-fill');
+    const progressIndicator = document.getElementById('nav-progress-indicator');
+    const navProgress = document.getElementById('nav-progress');
+    
+    if (progressText && progressFill && progressIndicator && navProgress) {
+        progressText.textContent = `${completedPages}/${totalPages}`;
+        progressFill.style.width = `${progressPercent}%`;
+        
+        // Show progress elements if user has started the course
+        if (completedPages > 0) {
+            progressIndicator.style.display = 'flex';
+            navProgress.style.display = 'block';
+        } else {
+            progressIndicator.style.display = 'none';
+            navProgress.style.display = 'none';
+        }
+    }
+}
+
+function getCompletedPagesCount() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][id$="-check"]:checked');
+    return checkboxes.length;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Page elements
     const landingPage = document.getElementById('landing-page');
@@ -32,12 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Buttons
     const landingBtn = document.getElementById('landing-btn');
     const startBtn = document.getElementById('start-btn');
-    const backToTitlesBtn = document.getElementById('back-to-titles');
-    const goToFirstPageBtn = document.getElementById('go-to-first-page');
     const nextPageBtn = document.getElementById('next-page-btn');
     const prevPageBtn = document.getElementById('prev-page-btn');
     const clearProgressBtn = document.getElementById('clear-progress-btn');
     const progressIndicator = document.getElementById('progress-indicator');
+    const heroImageContainer = document.getElementById('hero-image-container');
     
     // State variables
     let currentUnitId = null;
@@ -130,15 +230,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial Navigation ---
 
-    landingBtn.addEventListener('click', () => {
+    // Function to navigate to course overview
+    function navigateToOverview() {
         landingPage.style.display = 'none';
         courseOverview.style.display = 'block';
+        updateNavbarVisibility('overview');
         saveProgress();
-    });
+    }
+
+    // Landing button click event
+    if (landingBtn) {
+        landingBtn.addEventListener('click', navigateToOverview);
+    }
+
+    // Bottom text click event
+    const bottomText = document.querySelector('.bottom-text');
+    if (bottomText) {
+        bottomText.addEventListener('click', navigateToOverview);
+    }
+
+    // Hero image click event - navigate to overview page
+    if (heroImageContainer) {
+        heroImageContainer.addEventListener('click', navigateToOverview);
+    }
 
     startBtn.addEventListener('click', () => {
         courseOverview.style.display = 'none';
         showUnitList();
+        updateNavbarVisibility('units');
         saveProgress();
     });
 
@@ -154,6 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clearProgressBtn) clearProgressBtn.style.display = 'none';
             if (progressIndicator) progressIndicator.style.display = 'none';
         }
+        
+        // Update navigation progress
+        updateNavigationProgress();
     }
 
     // Load progress when page loads
@@ -167,10 +289,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'overview':
                     landingPage.style.display = 'none';
                     courseOverview.style.display = 'block';
+                    updateNavbarVisibility('overview');
                     break;
                 case 'course':
                     landingPage.style.display = 'none';
                     courseOverview.style.display = 'none';
+                    updateNavbarVisibility('units');
                     if (savedProgress.unit) {
                         currentUnitId = savedProgress.unit;
                         const pageListContainer = document.getElementById(`unit${savedProgress.unit}-pages`);
@@ -187,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (savedProgress.unit && savedProgress.page !== undefined) {
                         landingPage.style.display = 'none';
                         courseOverview.style.display = 'none';
+                        updateNavbarVisibility('page');
                         currentUnitId = savedProgress.unit;
                         currentPageIndex = savedProgress.page;
                         const pageListContainer = document.getElementById(`unit${savedProgress.unit}-pages`);
@@ -305,6 +430,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show completion message with animation
         completionMessage.style.display = 'flex';
         
+        // Hide navbar on completion page
+        updateNavbarVisibility('completion');
+        
         // Add some celebration effects
         setTimeout(() => {
             // Optional: Play a success sound here if you have one
@@ -392,35 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Navigation within a page (Back to Titles / Next Page)
-    backToTitlesBtn.addEventListener('click', () => {
-        pageDisplay.style.display = 'none';
-        showUnitList();
-        showPageList(currentUnitId);
-    });
 
-    // 5. Go to first page button
-    goToFirstPageBtn.addEventListener('click', () => {
-        // Hide all sections immediately
-        pageDisplay.style.display = 'none';
-        courseContainer.style.display = 'none';
-        courseOverview.style.display = 'none';
-        completionMessage.style.display = 'none';
-        
-        // Show landing page (the very first page)
-        landingPage.style.display = 'block';
-        
-        // Reset current state but keep progress
-        currentUnitId = null;
-        currentPageIndex = 0;
-        currentPages = [];
-        
-        // Save the new state
-        saveProgress();
-        
-        // Scroll to top to ensure user sees the landing page
-        window.scrollTo(0, 0);
-    });
 
     nextPageBtn.addEventListener('click', () => {
         // Mark current page's checkbox as complete
@@ -470,6 +570,9 @@ document.addEventListener('DOMContentLoaded', () => {
             courseContainer.style.display = 'none';
             pageDisplay.style.display = 'none';
             
+            // Hide navbar on landing page
+            updateNavbarVisibility('landing');
+            
             // Save the reset state
             saveProgress();
         });
@@ -487,6 +590,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 courseContainer.style.display = 'none';
                 pageDisplay.style.display = 'none';
                 completionMessage.style.display = 'none';
+                
+                // Hide navbar on landing page
+                updateNavbarVisibility('landing');
                 
                 updateProgressUI();
                 saveProgress();
@@ -512,6 +618,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load saved progress when page loads
     restoreProgress();
+    
+    // Set initial navbar visibility based on current page
+    const savedProgress = loadProgress();
+    if (!savedProgress.section || savedProgress.section === 'landing') {
+        updateNavbarVisibility('landing');
+    }
 });
 
 // --- Additional Navigation Functions ---
@@ -541,6 +653,9 @@ function goToPreviousSection() {
     if (courseContainer) {
         courseContainer.style.display = 'block';
     }
+    
+    // Show navbar when going back to course
+    updateNavbarVisibility('units');
 }
 
 // Function to go to home page
@@ -561,6 +676,13 @@ function goToHome() {
     if (landingPage) {
         landingPage.style.display = 'block';
     }
+    
+    // Clear navigation state (no active nav links for landing page)
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => link.classList.remove('active'));
+    
+    // Hide navbar on landing page
+    updateNavbarVisibility('landing');
     
     // Scroll to top
     window.scrollTo(0, 0);
